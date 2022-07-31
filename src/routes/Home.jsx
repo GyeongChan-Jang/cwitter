@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { collection, addDoc, onSnapshot } from 'firebase/firestore'
-import { dbService } from 'fBase'
+import { ref, uploadString, getDownloadURL } from 'firebase/storage'
+import { dbService, storageService } from 'fBase'
 import Cweet from 'components/Cweet'
+import { v4 as uuidv4 } from 'uuid'
 
 const Home = ({ userObj }) => {
   const [cweet, setCweet] = useState('')
@@ -37,13 +39,23 @@ const Home = ({ userObj }) => {
   }
 
   const onSubmit = async (event) => {
-    // event.preventDefault()
-    // await addDoc(collection(dbService, 'cweet'), {
-    //   text: cweet,
-    //   createdAt: Date.now(),
-    //   creatorId: userObj.uid
-    // })
-    // setCweet('')
+    event.preventDefault()
+    let attachmentUrl = ''
+    if (attachment !== '') {
+      // 사용자의 아이디로 폴더를 만들고 이미지 제목을 설정 -> '사용자id/이미지제목'
+      const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`)
+      const response = await uploadString(attachmentRef, attachment, 'data_url')
+      attachmentUrl = await getDownloadURL(response.ref)
+    }
+    const newCweet = {
+      text: cweet,
+      createdAt: Date.now(),
+      creatorId: userObj.uid,
+      attachmentUrl
+    }
+    await addDoc(collection(dbService, 'cweet'), newCweet)
+    setCweet('')
+    setAttachment('')
   }
 
   const onFileChange = (event) => {
