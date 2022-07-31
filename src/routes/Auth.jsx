@@ -31,11 +31,7 @@ const Auth = () => {
       let data
       if (newAccount) {
         // create account
-        data = await createUserWithEmailAndPassword(
-          authService,
-          email,
-          password
-        )
+        data = await createUserWithEmailAndPassword(authService, email, password)
       } else {
         // log in
         data = await signInWithEmailAndPassword(authService, email, password)
@@ -62,7 +58,9 @@ const Auth = () => {
       provider = new GithubAuthProvider()
     }
     const data = await signInWithPopup(authService, provider)
-    console.log(data)
+    console.log(data.refreshToken)
+    console.log(data.expiresIn)
+    console.log(data.tokenExpiration)
   }
 
   return (
@@ -87,9 +85,7 @@ const Auth = () => {
         <input type="submit" value={newAccount ? 'Create Account' : 'Log-In'} />
         {error}
       </form>
-      <span onClick={toggleAccount}>
-        {newAccount ? 'Sign in' : 'Create Account'}
-      </span>
+      <span onClick={toggleAccount}>{newAccount ? 'Sign in' : 'Create Account'}</span>
       <div>
         <button onClick={onSocialClick} name="google">
           Continue with Google
