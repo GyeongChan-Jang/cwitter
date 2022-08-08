@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/cwitter/static/js/main.628cfeaf.js",
+    "main.js": "/cwitter/static/js/main.6b835ada.js",
     "index.html": "/cwitter/index.html",
-    "main.628cfeaf.js.map": "/cwitter/static/js/main.628cfeaf.js.map"
+    "main.6b835ada.js.map": "/cwitter/static/js/main.6b835ada.js.map"
   },
   "entrypoints": [
-    "static/js/main.628cfeaf.js"
+    "static/js/main.6b835ada.js"
   ]
 }
